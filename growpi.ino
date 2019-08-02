@@ -226,5 +226,5 @@ void loop(void)
   // You can have more than one DS18B20 on the same bus.  
   // 0 refers to the first IC on the wire 
     
-  delay(500);
+  delay(1000);
 }
