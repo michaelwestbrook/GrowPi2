@@ -211,15 +211,13 @@ void unifiedSensorAPIRead(void)
 void loop(void) 
 { 
   //simpleRead(); 
-  advancedRead();
-  // unifiedSensorAPIRead();
+  // advancedRead();
+  unifiedSensorAPIRead();
 
   // call sensors.requestTemperatures() to issue a global temperature 
   // request to all devices on the bus 
   /********************************************************************/
-  Serial.print(" Requesting temperatures..."); 
   sensors.requestTemperatures(); // Send the command to get temperature readings 
-  Serial.println("DONE"); 
   /********************************************************************/
   Serial.print("Temperature is: "); 
   Serial.print(sensors.getTempCByIndex(0)); // Why "byIndex"?  
