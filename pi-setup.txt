@@ -1,4 +1,4 @@
-- Install Arduino https://www.arduino.cc/en/Guide/Linux 
+Install Arduino https://www.arduino.cc/en/Guide/Linux 
 - wget https://downloads.arduino.cc/arduino-1.8.9-linuxarm.tar.xz
 - tar -xf arduino-1.6****.tar.xz
 - rm arduino-1.6****.tar.xz
@@ -9,4 +9,5 @@
 - sudo apt update -y
 - sudo apt-get install python-pip
 - pip install pyserial
-- arduino --upload --port /dev/ttyACM0 ./temp-sensor.ino
+- arduino --upload --port /dev/ttyACM0 growpi.ino
+- python listen.py
