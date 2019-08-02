@@ -211,9 +211,9 @@ void unifiedSensorAPIRead(void)
 void loop(void) 
 { 
   if (Serial.available()) {
-    byte nr = Serial.read();
+    byte nr = Serial.readLine();
     Serial.print("The following char was received: ");
-    Serial.println(nr, DEC);
+    Serial.println(nr);
     //simpleRead(); 
     // advancedRead();
     unifiedSensorAPIRead();
