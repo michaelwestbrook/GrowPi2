@@ -213,7 +213,7 @@ void loop(void)
   if (Serial.available() > 0) {
     byte nr = Serial.read();
     Serial.print("The following char was received: ");
-    Serial.println(nr, DEC);
+    Serial.println(nr);
     // //simpleRead(); 
     // advancedRead();
     // // unifiedSensorAPIRead();
