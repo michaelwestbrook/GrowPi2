@@ -210,13 +210,13 @@ void unifiedSensorAPIRead(void)
 /**************************************************************************/
 void loop(void) 
 { 
-  if (Serial.available()) {
+  if (Serial.available() > 0) {
     byte nr = Serial.read();
     Serial.print("The following char was received: ");
     Serial.println(nr, DEC);
     //simpleRead(); 
-    // advancedRead();
-    unifiedSensorAPIRead();
+    advancedRead();
+    // unifiedSensorAPIRead();
 
     // call sensors.requestTemperatures() to issue a global temperature 
     // request to all devices on the bus 
