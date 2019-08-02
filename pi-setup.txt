@@ -4,7 +4,8 @@
 - rm arduino-1.6****.tar.xz
 - arduino --install-library OneWire
 - arduino --install-library DallasTemperature
-- arduino --install-library "Adafruit TSL2561"
+- arduino --install-library "Adafruit Unified Sensor"
+- arduino --install-library "Adafruit TSL2591 Library"
 - sudo apt update -y
 - sudo apt-get install python-pip
 - pip install pyserial
