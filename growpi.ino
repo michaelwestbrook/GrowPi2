@@ -215,7 +215,7 @@ void loop(void)
     Serial.print("The following line was received: ");
     Serial.println(nr, DEC);
     // //simpleRead(); 
-    // advancedRead();
+    advancedRead();
     // // unifiedSensorAPIRead();
 
     // // call sensors.requestTemperatures() to issue a global temperature 
