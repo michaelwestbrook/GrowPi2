@@ -1,9 +1,11 @@
-- Flash SD card
-- Add file named 'ssh' to boot drive
 - Install Arduino https://www.arduino.cc/en/Guide/Linux 
-  - wget https://downloads.arduino.cc/arduino-1.8.9-linuxarm.tar.xz
-  - tar -xf arduino-1.6****.tar.xz
-  - rm arduino-1.6****.tar.xz
-  - arduino --install-library OneWire
-  - arduino --install-library DallasTemperature
- 
+- wget https://downloads.arduino.cc/arduino-1.8.9-linuxarm.tar.xz
+- tar -xf arduino-1.6****.tar.xz
+- rm arduino-1.6****.tar.xz
+- arduino --install-library OneWire
+- arduino --install-library DallasTemperature
+- arduino --install-library "Adafruit TSL2561"
+- sudo apt update -y
+- sudo apt-get install python-pip
+- pip install pyserial
+- arduino --upload --port /dev/ttyACM0 ./temp-sensor.ino
