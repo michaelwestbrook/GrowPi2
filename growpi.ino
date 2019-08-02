@@ -158,20 +158,25 @@ void simpleRead(void)
     Show how to read IR and Full Spectrum at once and convert to lux
 */
 /**************************************************************************/
-void advancedRead(void)
-{
-  // More advanced data read example. Read 32 bits with top 16 bits IR, bottom 16 bits full spectrum
-  // That way you can do whatever math and comparisons you want!
-  uint32_t lum = tsl.getFullLuminosity();
-  uint16_t ir, full;
-  ir = lum >> 16;
-  full = lum & 0xFFFF;
-  Serial.print("[ "); Serial.print(millis()); Serial.print(" ms ] ");
-  Serial.print("IR: "); Serial.print(ir);  Serial.print("  ");
-  Serial.print("Full: "); Serial.print(full); Serial.print("  ");
-  Serial.print("Visible: "); Serial.print(full - ir); Serial.print("  ");
-  Serial.print("Lux: "); Serial.println(tsl.calculateLux(full, ir));
-}
+// struct Lux { 
+//     int IR, Visible;
+//     double Lux;
+// };
+// Lux advancedRead(void)
+// {
+//   // More advanced data read example. Read 32 bits with top 16 bits IR, bottom 16 bits full spectrum
+//   // That way you can do whatever math and comparisons you want!
+//   uint32_t lum = tsl.getFullLuminosity();
+//   uint16_t ir, full;
+//   ir = lum >> 16;
+//   full = lum & 0xFFFF;
+//   // Serial.print("[ "); Serial.print(millis()); Serial.print(" ms ] ");
+//   // Serial.print("IR: "); Serial.print(ir);  Serial.print("  ");
+//   // Serial.print("Full: "); Serial.print(full); Serial.print("  ");
+//   // Serial.print("Visible: "); Serial.print(full - ir); Serial.print("  ");
+//   // Serial.print("Lux: "); Serial.println(tsl.calculateLux(full, ir));
+//   return struct Lux lux = {.IR = ir, .Visible = full - ir, Lux = tsl.calculateLux(full, ir)};
+// }
 
 /**************************************************************************/
 /*
@@ -211,16 +216,25 @@ void unifiedSensorAPIRead(void)
 void loop(void) 
 { 
     // //simpleRead(); 
-    advancedRead();
+    // struct Lux lux = advancedRead();
+    uint32_t lum = tsl.getFullLuminosity();
+    uint16_t ir, full;
+    ir = lum >> 16;
+    full = lum & 0xFFFF;
+    float lux = tsl.calculateLux(full, ir);
+    // Serial.println(full);
     // // unifiedSensorAPIRead();
 
     // call sensors.requestTemperatures() to issue a global temperature 
     // request to all devices on the bus 
     /********************************************************************/
     sensors.requestTemperatures(); // Send the command to get temperature readings 
-    /********************************************************************/
-    Serial.print("Temperature is: "); 
-    Serial.print(sensors.getTempCByIndex(0)); // Why "byIndex"?  
+    // /********************************************************************/
+    // Serial.print("Temperature is: "); 
+    float temp = sensors.getTempCByIndex(0); // Why "byIndex"?  
+    // Serial.println(temp);
     // You can have more than one DS18B20 on the same bus.  
     // 0 refers to the first IC on the wire 
+    Serial.println("{\"IR\":" + String(ir) + ",\"Visible\":" + String(full - ir) + "\"Full\":" + String(full) + ",\"Temperature\":" + String(temp) + "}");
+    delay(1000);
 }
