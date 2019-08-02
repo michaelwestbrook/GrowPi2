@@ -210,19 +210,22 @@ void unifiedSensorAPIRead(void)
 /**************************************************************************/
 void loop(void) 
 { 
-  //simpleRead(); 
-  // advancedRead();
-  unifiedSensorAPIRead();
+  if (Serial.available()) {
+    byte nr = Serial.read();
+    Serial.print("The following char was received: ");
+    Serial.println(nr, DEC);
+    //simpleRead(); 
+    // advancedRead();
+    unifiedSensorAPIRead();
 
-  // call sensors.requestTemperatures() to issue a global temperature 
-  // request to all devices on the bus 
-  /********************************************************************/
-  sensors.requestTemperatures(); // Send the command to get temperature readings 
-  /********************************************************************/
-  Serial.print("Temperature is: "); 
-  Serial.print(sensors.getTempCByIndex(0)); // Why "byIndex"?  
-  // You can have more than one DS18B20 on the same bus.  
-  // 0 refers to the first IC on the wire 
-    
-  delay(1000);
+    // call sensors.requestTemperatures() to issue a global temperature 
+    // request to all devices on the bus 
+    /********************************************************************/
+    sensors.requestTemperatures(); // Send the command to get temperature readings 
+    /********************************************************************/
+    Serial.print("Temperature is: "); 
+    Serial.print(sensors.getTempCByIndex(0)); // Why "byIndex"?  
+    // You can have more than one DS18B20 on the same bus.  
+    // 0 refers to the first IC on the wire 
+  }
 }
