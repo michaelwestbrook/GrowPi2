@@ -25,15 +25,15 @@ def readArduino():
     fileOut.flush()
     os.fsync(fileOut.fileno())
 
-command = input("command: ")
-sensors = input("Sensors: ")
-relays = input("Relays: ")
-arduino.write([command, sensors, relays])
-time.sleep(TIMEOUT)
-readArduino()
+
 while True:
     try:
-        print arduino.read()
+        command = input("command: ")
+        sensors = input("Sensors: ")
+        relays = input("Relays: ")
+        arduino.write([command, sensors, relays])
+        time.sleep(TIMEOUT)
+        readArduino()
     except (KeyboardInterrupt, SystemExit):
         print "\nexiting gracefully"
         arduino.write([2, 0, 0])
