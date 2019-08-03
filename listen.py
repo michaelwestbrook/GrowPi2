@@ -31,9 +31,12 @@ while True:
         command = input("command: ")
         sensors = input("Sensors: ")
         relays = input("Relays: ")
-        arduino.write([command, sensors, relays])
-        time.sleep(TIMEOUT)
-        readArduino()
+        if command >= 0 and command < 256 and sensors >= 0 and sensors < 8 and relays >= 0 and relays < 256:
+            arduino.write([command, sensors, relays])
+            time.sleep(TIMEOUT)
+            readArduino()
+        else:
+            print "Got unexpected commands"
     except (KeyboardInterrupt, SystemExit):
         print "\nexiting gracefully"
         arduino.write([2, 0, 0])
