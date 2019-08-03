@@ -18,22 +18,22 @@ def readArduino():
     data = arduino.readline()[:-1]
     while not data:
         data = arduino.readline()[:-1]
-        
+
     out = now + ":" + data
     print out
-    fileOut.write(out)
+    fileOut.writelines(out)
     fileOut.flush()
     os.fsync(fileOut.fileno())
 
-
+command = input("command: ")
+sensors = input("Sensors: ")
+relays = input("Relays: ")
+arduino.write([command, sensors, relays])
+time.sleep(TIMEOUT)
+readArduino()
 while True:
     try:
-        command = input("command: ")
-        sensors = input("Sensors: ")
-        relays = input("Relays: ")
-        arduino.write([command, sensors, relays])
-        time.sleep(TIMEOUT)
-        readArduino()
+        print arduino.read()
     except (KeyboardInterrupt, SystemExit):
         print "\nexiting gracefully"
         arduino.write([2, 0, 0])

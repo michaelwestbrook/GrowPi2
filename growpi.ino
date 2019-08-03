@@ -181,11 +181,11 @@ double readTemperature()
 
 void loop()
 {
-  if (Serial.available() > 0)
+  if (Serial.available() == 3)
   {
     byte commands [3];
     Serial.readBytes(commands, 3);
-    byte command = commands[0]; // 1 = read sensors, 2 = write to relays, 3 = both
+    byte command = commands[0]; // (bitmask) 1 = read sensors, 2 = write to relays
     byte sensors = commands[1]; // (bitmask) 1 = moisture, 2 = temperature, 4 = LUX
     byte relays =  commands[2]; // (bitmask) 'Relay number'^2 - 1
     uint32_t lux [3] = {0, 0, 0};
