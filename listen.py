@@ -4,7 +4,7 @@ import serial
 import os
 import threading
 
-TIMEOUT = 1
+TIMEOUT = 30
 arduino = serial.Serial('/dev/ttyACM0', 9600, timeout=.1)
 timestr = datetime.utcnow().strftime("%Y%m%d-%H%M%S") + ".gpi"
 fileOut = open(timestr, "w+")
@@ -30,9 +30,10 @@ while True:
     try:
         if command >= 0 and command < 256 and sensors >= 0 and sensors < 8 and relays >= 0 and relays < 256:
             arduino.write([command, sensors, relays])
-            time.sleep(TIMEOUT)
+            time.sleep(1)
             readArduino()
             relays = (relays + 1) % 256
+            time.sleep(TIMEOUT)
         else:
             print "Got unexpected commands"
     except (KeyboardInterrupt, SystemExit):

@@ -176,7 +176,11 @@ uint16_t readMoisture()
 double readTemperature()
 {
   sensors.requestTemperatures(); // Send the command to get temperatures
-  return sensors.getTempCByIndex(0);
+  float temperature = sensors.getTempCByIndex(0);
+  while (temperature == -127.0) {
+    temperature = sensors.getTempCByIndex(0);
+  }
+  return temperature;
 }
 
 void loop()
