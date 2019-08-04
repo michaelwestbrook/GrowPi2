@@ -23,11 +23,11 @@ def readArduino():
     fileOut.flush()
     os.fsync(fileOut.fileno())
 
+command = 3
+sensors = 6
 relays = 0
 while True:
     try:
-        command = 3
-        sensors = 6
         if command >= 0 and command < 256 and sensors >= 0 and sensors < 8 and relays >= 0 and relays < 256:
             arduino.write([command, sensors, relays])
             time.sleep(TIMEOUT)
