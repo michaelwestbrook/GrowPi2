@@ -9,5 +9,6 @@ Install Arduino https://www.arduino.cc/en/Guide/Linux
 - sudo apt update -y
 - sudo apt-get install python-pip
 - pip install pyserial
+- sudo apt-get install nodejs
 - arduino --upload --port /dev/ttyACM0 growpi.ino
 - python listen.py
