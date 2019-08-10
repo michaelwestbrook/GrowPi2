@@ -1,0 +1,23 @@
+{
+  "name": "growpi-upload",
+  "version": "0.0.1",
+  "description": "Uploads GrowPi data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelwestbrook/GrowPi2.git"
+  },
+  "author": "Mike Westbrook",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michaelwestbrook/GrowPi2/issues"
+  },
+  "homepage": "https://github.com/michaelwestbrook/GrowPi2#readme",
+  "dependencies": {
+    "@azure/service-bus": "^1.0.3",
+    "@types/node": "^12.7.1"
+  }
+}
