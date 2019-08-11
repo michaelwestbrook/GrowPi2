@@ -156,7 +156,7 @@ void printToSerial(uint32_t* the_lux, double the_temp, uint16_t the_moisture, by
   byte bytes[result.length() + 1];
   result.getBytes(bytes, arr_len(bytes));
   Serial.write(bytes, result.length());
-  Serial.write(-1);
+  Serial.write("\n");
 }
 
 uint16_t readMoisture()
