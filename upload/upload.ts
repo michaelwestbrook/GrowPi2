@@ -1,12 +1,10 @@
 import SerialPort from "serialport";
 const port = new SerialPort("/dev/ttyACM0", { baudRate: 9600 });
-
-function prefixPrint(prefix: string, data: string | Buffer | null) {
-  if (data && data[0] === -1) {
-    console.log("END");
+port.on("open", () => port.flush((err) => {
+  if (err) {
+    console.error(err);
   }
-  console.log(`${prefix}: ${data}`);
-}
+}));
 
 let relays = 0;
 function timed() {
@@ -14,15 +12,28 @@ function timed() {
     if (err) {
       console.error(err);
     }
+
+    console.log(`Write ${relays}`);
     relays = (relays + 1) % 256;
     timed();
-  }), 5000);
+  }), 20000);
 }
 // Read data that is available but keep the stream in "paused mode"
-port.on("readable", () => prefixPrint("Data", port.read()));
+port.on("readable", () => setTimeout(() => {
+  const data = port.read();
+  if (data) {
+    try {
+      const dataObj = JSON.parse(data.toString());
+      dataObj.time = Date.now();
+      console.log(JSON.stringify(dataObj, null, 2));
+    } catch (error) {
+      console.error(`Bad data! Bad!: ${data}`);
+    }
+  }
+}, 1000));
 
 // Switches the port into "flowing mode"
 // port.on("data", (data) => prefixPrint("Flow", data));
-port.on("error", (err) => prefixPrint("Error", err.message));
+port.on("error", console.error);
 
 timed();

@@ -112,12 +112,12 @@ void printToSerial(uint32_t* the_lux, double the_temp, uint16_t the_moisture, by
 
   if (the_command[0] & SENSOR_COMMAND && the_command[1] & LUX_COMMAND)
   {
-    result.concat("LUX:");
-    result.concat("{IR:");
+    result.concat("\"LUX\":");
+    result.concat("{\"IR\":");
     result.concat(the_lux[IR_INDEX]);
-    result.concat(",FULL:");
+    result.concat(",\"FULL\":");
     result.concat(the_lux[FULL_INDEX]);
-    result.concat(",LUX:");
+    result.concat(",\"LUX\":");
     result.concat(the_lux[LUX_INDEX]);
     result.concat("}");
   }
@@ -129,7 +129,7 @@ void printToSerial(uint32_t* the_lux, double the_temp, uint16_t the_moisture, by
       result.concat(",");
     }
 
-    result.concat("TEMP:");
+    result.concat("\"TEMP\":");
     result.concat(the_temp);
   }
 
@@ -140,7 +140,7 @@ void printToSerial(uint32_t* the_lux, double the_temp, uint16_t the_moisture, by
       result.concat(",");
     }
 
-    result.concat("MOISTURE:");
+    result.concat("\"MOISTURE\":");
     result.concat(the_moisture);
   }
 
@@ -150,13 +150,12 @@ void printToSerial(uint32_t* the_lux, double the_temp, uint16_t the_moisture, by
   }
 
   // Always return the state of the relays
-  result.concat("RELAYS:");
+  result.concat("\"RELAYS\":");
   result.concat(my_relay_state);
   result.concat("}");
   byte bytes[result.length() + 1];
   result.getBytes(bytes, arr_len(bytes));
   Serial.write(bytes, result.length());
-  Serial.write("\n");
 }
 
 uint16_t readMoisture()
@@ -183,6 +182,40 @@ double readTemperature()
   return temperature;
 }
 
+void performCommand(byte command, byte sensors, byte relays) {
+  uint32_t lux [3] = {0, 0, 0};
+  double temp = 0.0;
+  uint16_t moisture = 0;
+  if (command & SENSOR_COMMAND)
+  {
+    if (sensors & TEMPERATURE_COMMAND)
+    {
+      temp = readTemperature();
+    }
+
+    if (sensors & MOISTURE_COMMAND)
+    {
+      moisture = readMoisture();
+    }
+
+    if (sensors & LUX_COMMAND)
+    {
+      advancedRead(lux);
+    }
+  }
+
+  if (command & RELAY_COMMAND)
+  {
+    if (relays != my_relay_state)
+    {
+      setRelays(relays);
+    }
+  }
+  byte commands [3] = {command, sensors, relays};
+  printToSerial(lux, temp, moisture, commands);
+}
+
+unsigned long lastCheck = millis();
 void loop()
 {
   if (Serial.available() == 3)
@@ -192,35 +225,9 @@ void loop()
     byte command = commands[0]; // (bitmask) 1 = read sensors, 2 = write to relays
     byte sensors = commands[1]; // (bitmask) 1 = moisture, 2 = temperature, 4 = LUX
     byte relays =  commands[2]; // (bitmask) 'Relay number'^2 - 1
-    uint32_t lux [3] = {0, 0, 0};
-    double temp = 0.0;
-    uint16_t moisture = 0;
-    if (command & SENSOR_COMMAND)
-    {
-      if (sensors & TEMPERATURE_COMMAND)
-      {
-        temp = readTemperature();
-      }
-
-      if (sensors & MOISTURE_COMMAND)
-      {
-        moisture = readMoisture();
-      }
-
-      if (sensors & LUX_COMMAND)
-      {
-        advancedRead(lux);
-      }
-    }
-
-    if (command & RELAY_COMMAND)
-    {
-      if (relays != my_relay_state)
-      {
-        setRelays(relays);
-      }
-    }
-
-    printToSerial(lux, temp, moisture, commands);
+    performCommand(command, sensors, relays);
+  } else if (millis() - lastCheck > 5000) {
+    lastCheck = millis();
+    performCommand(SENSOR_COMMAND, MOISTURE_COMMAND + TEMPERATURE_COMMAND + LUX_COMMAND, 0);
   }
 }
