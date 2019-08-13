@@ -1,4 +1,5 @@
 import SerialPort from "serialport";
+import SerialJsonParser from "./SerialJsonParser";
 
 export class ArduinoCommunicator {
   public static listPorts(): void {
@@ -12,6 +13,8 @@ export class ArduinoCommunicator {
   }
 
   private serialPort: SerialPort;
+
+  private listening: boolean = false;
 
   constructor(port: string = "/dev/ttyACM0", baudRate: number = 9600) {
     this.serialPort = new SerialPort(port, { baudRate, autoOpen: false });
@@ -55,18 +58,17 @@ export class ArduinoCommunicator {
   }
 
   private onReadable(): void {
-    setTimeout(() => {
-      const data = this.serialPort.read();
-      if (data) {
-        try {
-          const dataObj = JSON.parse(data.toString());
-          dataObj.time = Date.now();
-          console.log(JSON.stringify(dataObj, null, 2));
-        } catch (error) {
-          console.error(`Bad data! Bad!: ${data}`);
+    if (!this.listening) {
+      this.listening = true;
+      setTimeout(() => {
+        const data = this.serialPort.read();
+        if (data) {
+          console.log(JSON.stringify(SerialJsonParser.extractReading(data.toString()), null, 2));
         }
-      }
-    }, 1000);
+
+        this.listening = false;
+      }, 1000);
+    }
   }
 }
 
