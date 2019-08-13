@@ -1,8 +1,9 @@
 import ArduinoCommunicator from "./arduino-communicator";
-import FileListener from "./file-listener";
+import ServiceBusListener from "./servicebus-listener";
 
 const communicator = new ArduinoCommunicator();
-communicator.addListener(new FileListener());
+communicator.addListener(
+  new ServiceBusListener(process.env.GROWPI_SERVICEBUS_CONN_STR ? process.env.GROWPI_SERVICEBUS_CONN_STR : ""));
 
 communicator.start()
   .then(timed);

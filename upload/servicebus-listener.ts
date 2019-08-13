@@ -1,0 +1,26 @@
+import { Sender, ServiceBusClient } from "@azure/service-bus";
+import { IGrowPiListener } from "./arduino-communicator";
+import GrowPiReading from "./growpi-reading";
+
+export class ServiceBusListener implements IGrowPiListener {
+  private sender: Sender;
+  constructor(connectionString: string) {
+    const serviceClient = ServiceBusClient.createFromConnectionString(connectionString);
+    const queueClient = serviceClient.createQueueClient("growpi");
+    this.sender = queueClient.createSender();
+  }
+
+  public readingReceived(readings: GrowPiReading[]) {
+    readings.forEach((reading) => {
+      this.sender.send({
+        body: JSON.stringify(reading),
+      });
+    });
+  }
+
+  public error(error: Error) {
+    console.error(error);
+  }
+}
+
+export default ServiceBusListener;
