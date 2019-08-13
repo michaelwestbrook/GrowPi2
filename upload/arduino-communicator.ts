@@ -4,6 +4,7 @@ import SerialJsonParser from "./SerialJsonParser";
 
 export interface IGrowPiListener {
   readingReceived(readings: GrowPiReading[]): void;
+  error(error: Error): void;
 }
 
 export class ArduinoCommunicator {
@@ -52,7 +53,7 @@ export class ArduinoCommunicator {
     }
   }
   private onError(error: Error): void {
-    console.error(error);
+    this.listeners.forEach((listener) => listener.error(error));
   }
 
   private onOpen(): void {

@@ -1,11 +1,8 @@
 import ArduinoCommunicator from "./arduino-communicator";
-import GrowPiReading from "./growpi-reading";
+import FileListener from "./file-listener";
+
 const communicator = new ArduinoCommunicator();
-communicator.addListener({
-  readingReceived: (readings: GrowPiReading[]) => {
-    console.log(JSON.stringify(readings, null, 2));
-  },
-});
+communicator.addListener(new FileListener());
 
 communicator.start()
   .then(timed);
