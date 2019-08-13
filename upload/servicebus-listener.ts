@@ -12,6 +12,7 @@ export class ServiceBusListener implements IGrowPiListener {
 
   public readingReceived(readings: GrowPiReading[]) {
     readings.forEach((reading) => {
+      console.debug(JSON.stringify(reading, null, 2));
       this.sender.send({
         body: reading,
       });
