@@ -226,7 +226,7 @@ void loop()
     byte sensors = commands[1]; // (bitmask) 1 = moisture, 2 = temperature, 4 = LUX
     byte relays =  commands[2]; // (bitmask) 'Relay number'^2 - 1
     performCommand(command, sensors, relays);
-  } else if (millis() - lastCheck > 5000) {
+  } else if (millis() - lastCheck > 60000) {
     lastCheck = millis();
     performCommand(SENSOR_COMMAND, MOISTURE_COMMAND + TEMPERATURE_COMMAND + LUX_COMMAND, 0);
   }
