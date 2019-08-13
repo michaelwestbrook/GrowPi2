@@ -12,5 +12,5 @@ let relays = 0;
 function timed() {
   setTimeout(() => communicator.write([3, 7, relays])
     .then(() => relays = (relays + 1) % 256)
-    .then(timed), 120000);
+    .then(timed), 30000);
 }
