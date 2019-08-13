@@ -1,20 +1,17 @@
 import SerialPort from "serialport";
+import GrowPiReading from "./growpi-reading";
 import SerialJsonParser from "./SerialJsonParser";
 
-export class ArduinoCommunicator {
-  public static listPorts(): void {
-    SerialPort.list((error, ports) => {
-      if (error) {
-        console.error(error);
-      } else {
-        ports.forEach(console.log);
-      }
-    });
-  }
+export interface IGrowPiListener {
+  readingReceived(readings: GrowPiReading[]): void;
+}
 
+export class ArduinoCommunicator {
   private serialPort: SerialPort;
 
   private listening: boolean = false;
+
+  private listeners: IGrowPiListener[] = [];
 
   constructor(port: string = "/dev/ttyACM0", baudRate: number = 9600) {
     this.serialPort = new SerialPort(port, { baudRate, autoOpen: false });
@@ -49,6 +46,11 @@ export class ArduinoCommunicator {
     return Promise.resolve(0);
   }
 
+  public addListener(listener: IGrowPiListener) {
+    if (listener) {
+      this.listeners.push(listener);
+    }
+  }
   private onError(error: Error): void {
     console.error(error);
   }
@@ -62,10 +64,12 @@ export class ArduinoCommunicator {
       this.listening = true;
       setTimeout(() => {
         const data = this.serialPort.read();
+        let readings: GrowPiReading[] = [];
         if (data) {
-          console.log(JSON.stringify(SerialJsonParser.extractReading(data.toString()), null, 2));
+          readings = SerialJsonParser.extractReading(data.toString());
         }
 
+        this.listeners.forEach((listener) => listener.readingReceived(readings));
         this.listening = false;
       }, 1000);
     }
