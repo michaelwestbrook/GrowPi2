@@ -1,0 +1,35 @@
+{
+  "name": "growpi-upload",
+  "version": "0.0.1",
+  "description": "Uploads GrowPi data",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf build; rm -rf node_modules",
+    "build": "./node_modules/.bin/tsc",
+    "start": "node build/upload.js",
+    "flash-arduino": "arduino --upload --port /dev/ttyACM0 ../arduino/growpi.ino"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelwestbrook/GrowPi2.git"
+  },
+  "author": "Mike Westbrook",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michaelwestbrook/GrowPi2/issues"
+  },
+  "homepage": "https://github.com/michaelwestbrook/GrowPi2#readme",
+  "dependencies": {
+    "@azure/service-bus": "^1.0.3",
+    "@serialport/bindings": "^2.0.8",
+    "serialport": "^7.1.5",
+    "tedious": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.1",
+    "@types/serialport": "^7.0.4",
+    "@types/tedious": "^4.0.0",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
+  }
+}

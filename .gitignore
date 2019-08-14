@@ -1,1 +1,6 @@
-*.gpi
+logs
+node_modules
+build
+*.tar.xz
+nohup.out
+*.log

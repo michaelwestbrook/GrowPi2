@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "deploy-arduino",
+            "type": "shell",
+            "command": "arduino --upload growpi.ino --port /dev/ttyACM0",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
