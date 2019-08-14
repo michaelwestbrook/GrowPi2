@@ -24,7 +24,9 @@
     "@serialport/bindings": "^2.0.8",
     "@types/node": "^12.7.1",
     "@types/serialport": "^7.0.4",
-    "serialport": "^7.1.5"
+    "@types/tedious": "^4.0.0",
+    "serialport": "^7.1.5",
+    "tedious": "^6.3.0"
   },
   "devDependencies": {
     "tslint": "^5.18.0",
