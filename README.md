@@ -19,3 +19,13 @@ Install Arduino https://www.arduino.cc/en/Guide/Linux
 - pip install pyserial
 - arduino --upload --port /dev/ttyACM0 arduino/growpi.ino
 - python listen.py
+
+CREATE TABLE Readings(
+UTCTime DateTime,
+Lux Int,
+IR Int, 
+FullLux Int, 
+Temperature Float, 
+Moisture Int, 
+Relays TinyInt
+);

@@ -28,7 +28,7 @@ export class SerialJsonParser {
             jsonObj.MOISTURE,
             jsonObj.RELAYS));
         } catch (error) {
-          console.error(`JSON Syntax error: ${json}`);
+          // Do nothing
         }
         beginningIndex = -1;
       }
